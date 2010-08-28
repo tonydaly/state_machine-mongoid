@@ -18,22 +18,7 @@ module StateMachine
         # initial state of the machine *before* any attributes are set on the
         # object
         def define_state_initializer
-          @instance_helper_module.class_eval <<-end_eval, __FILE__, __LINE__
-            def initialize(attrs = {}, *args)
-              from_database = args.first
-              
-              if !from_database && (!attrs || !attrs.stringify_keys.key?('_id'))
-                filtered = respond_to?(:filter_protected_attrs) ? filter_protected_attrs(attrs) : attrs 
-                ignore = filtered ? filtered.keys : []
-                
-                initialize_state_machines(:dynamic => false, :ignore => ignore)
-                super
-                initialize_state_machines(:dynamic => true, :ignore => ignore)
-              else
-                super
-              end
-            end
-          end_eval
+          
         end
 
     end
